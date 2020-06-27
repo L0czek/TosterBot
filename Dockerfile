@@ -1,7 +1,10 @@
-FROM python:3.7-alpine
-RUN apk add build-base
-RUN python -m pip install discord.py
-COPY . /app
+FROM rust:latest
+
 WORKDIR /app
-VOLUME /data
-CMD python3 toster.py
+
+COPY . .
+
+RUN cargo build --release
+RUN cargo install --path .
+
+CMD ["/app/target/release/www-bot"]
